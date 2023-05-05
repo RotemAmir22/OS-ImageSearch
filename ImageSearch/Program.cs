@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
 public class Program
 {
     static void Main(String[] args)
     {
-        ImageSearch("C:\\Users\\PC\\Downloads\\matokies\\matokies8.png", "C:\\Users\\PC\\Downloads\\matokies\\matokies1.png", 4, "exact");
-        Console.WriteLine("end");
-        Console.ReadLine();
+        try
+        {
+            ImageSearch(args[0], args[1], int.Parse(args[2]), args[3]);
+            Console.WriteLine("end");
+            Console.ReadLine();
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
+
     }
     /**
      * image search - gets two images, prints the top left corner of the occurencie of the smaller image in the larger.
@@ -131,7 +138,7 @@ public class Program
                 if (image1[i, j] == image2[0, 0]) // its a match
                 {
                     int idxInOrigional = i + (diviation - 1) * image1.GetLength(0);
-                    Search(original, image2, idxInOrigional, j);
+                    SearchForExact(original, image2, idxInOrigional, j);
                 }
             }
 
@@ -139,10 +146,10 @@ public class Program
     }
 
     /**
-     * gets a starting point and goes over all the pixles of the smaller image and makes sure if they yare the sam
+     * gets a starting point and goes over all the pixles of the smaller image and makes sure if they are the same
      * if thay all are identical, printes the top left corner of the smaller image in the large one
      */
-    static void Search(Color[,] originalBig, Color[,] smallImage, int x_Big, int y_Big)
+    static void SearchForExact(Color[,] originalBig, Color[,] smallImage, int x_Big, int y_Big)
     {
         int idxRows = x_Big - 1;
         int idxCols = y_Big;
@@ -199,8 +206,92 @@ public class Program
 
     static void euclidian(Color[,] image1, Color[,] image2, Color[,] original, int diviation)
     {
-
+        for (int y = 0; y < image1.GetLength(0); y++)
+        {
+            for (int x = 0; x < image1.GetLength(1); x++)
+            {
+                // Calculate sum of Euclidean distances between pixels in image1 and image2
+                double distance = 0;
+                for (int i = 0; i < image2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < image2.GetLength(1); j++)
+                    {
+                        Color color1 = image1[y, x];
+                        Color color2 = image2[i, j];
+                        distance += Math.Sqrt(
+                            Math.Pow(color1.R - color2.R, 2) +
+                            Math.Pow(color1.G - color2.G, 2) +
+                            Math.Pow(color1.B - color2.B, 2)
+                        );
+                        // found first match
+                        if (distance == 0)
+                        {
+                            int idxInOrigional = y + (diviation - 1) * image1.GetLength(0);
+                            SearchForEuclidian(original, image2, i, j, idxInOrigional, x);
+                        }
+                    }       
+                }
+            }
+        }
     }
 
-
+    static void SearchForEuclidian(Color[,] originalImage, Color[,] smallImage, int idxRowSmall, int idxColSmall, int idxRowInOriginal, int idxColInOriginal)
+    {
+        double distance = 0;
+        int surfaceImage = smallImage.GetLength(0) * smallImage.GetLength(1);
+        string ans = "";
+        int idxRows = idxRowInOriginal - 1; // because increments
+        int idxCol = idxColInOriginal;
+        // run on small image, try to find matches in the large image
+        for (int i=idxRowSmall; i<smallImage.GetLength(0); i++)
+        {
+            idxRows++;
+            for (int j=idxColSmall; j<smallImage.GetLength(1); j++)
+            {
+                if (idxRows == originalImage.GetLength(0))
+                {
+                    if (surfaceImage == 0)
+                    {
+                        Console.WriteLine(ans);
+                        return;
+                    }
+                    return;
+                }
+                if (idxCol == originalImage.GetLength(1))
+                {
+                    if (surfaceImage == 0)
+                    {
+                        Console.WriteLine(ans);
+                        return;
+                    }
+                    // reset to start point
+                    idxCol = idxColInOriginal;
+                }
+                // calculate distance 
+                Color color1 = originalImage[idxRows, idxCol];
+                Color color2 = smallImage[i, j];
+                distance += Math.Sqrt(
+                    Math.Pow(color1.R - color2.R, 2) +
+                    Math.Pow(color1.G - color2.G, 2) +
+                    Math.Pow(color1.B - color2.B, 2)
+                );
+                // check if found match
+                if (distance == 0)
+                {
+                    if (surfaceImage == smallImage.GetLength(0) * smallImage.GetLength(1)) // check if first
+                        ans = idxRows.ToString() + "," + idxCol.ToString(); // save coordinates
+                    surfaceImage--;
+                    idxCol++;
+                    if (surfaceImage == 0)
+                    {
+                        Console.WriteLine(ans);
+                        return;
+                    }
+                }
+                
+            }
+        }
+        
+    }
 }
+
