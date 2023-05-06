@@ -6,3 +6,11 @@ C:\Users\PC\source\repos\ImageSearch\ImageSearch\obj\Debug\ImageSearch.csproj.Su
 C:\Users\PC\source\repos\ImageSearch\ImageSearch\obj\Debug\ImageSearch.csproj.CoreCompileInputs.cache
 C:\Users\PC\source\repos\ImageSearch\ImageSearch\obj\Debug\ImageSearch.exe
 C:\Users\PC\source\repos\ImageSearch\ImageSearch\obj\Debug\ImageSearch.pdb
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\bin\Debug\ImageSearch.exe.config
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\bin\Debug\ImageSearch.exe
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\bin\Debug\ImageSearch.pdb
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\obj\Debug\ImageSearch.csproj.AssemblyReference.cache
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\obj\Debug\ImageSearch.csproj.SuggestedBindingRedirects.cache
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\obj\Debug\ImageSearch.csproj.CoreCompileInputs.cache
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\obj\Debug\ImageSearch.exe
+C:\Users\Rotem\Documents\GitHub\ImageSearch\ImageSearch\obj\Debug\ImageSearch.pdb
